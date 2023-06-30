@@ -4,20 +4,22 @@
 
 Company: Always Right Temp Inc
 
+#
 Dev team:
-Engineering Manager: Rafał Jaszczyński
 
-Team lead: Rafał Jaszczyński
-
-Senior dev: Rafał Jaszczyński
-
-Senior dev: Rafał Jaszczyński
-
-Senior dev: Rafał Jaszczyński
-
-Senior QA dev: Rafał Jaszczyński
-
-Product Owner: Rafał Jaszczyński
+  Engineering Manager: Rafał Jaszczyński
+  
+  Team lead: Rafał Jaszczyński
+  
+  Senior dev: Rafał Jaszczyński
+  
+  Senior dev: Rafał Jaszczyński
+  
+  Senior dev: Rafał Jaszczyński
+  
+  Senior QA dev: Rafał Jaszczyński
+  
+  Product Owner: Rafał Jaszczyński
 
 ## Functional Requirements
 - detect anomalies in temperature measurements
