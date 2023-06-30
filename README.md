@@ -72,3 +72,27 @@ Frameworks/libraries to be used:
 - lombok, mapstruct, liquibase
 
 
+## Checklist
+
+- ~~Average algorithm~~
+- Timestamp algorithm
+- properties from file
+- redis integration
+- mysql integration
+- kafka integration
+- docker-compose
+
+- multiple algorithm (list)
+
+
+- 2 endpoints rest api
+- 1 stream event endpoint
+
+- create generator
+
+- perfomance ~ 20k request/s
+
+Extras:
+- tests in spock (data driven BDD)
+- second variation of services (3 services, 1 working on schedule per 1 sec)
+- kubernetes/deployment
