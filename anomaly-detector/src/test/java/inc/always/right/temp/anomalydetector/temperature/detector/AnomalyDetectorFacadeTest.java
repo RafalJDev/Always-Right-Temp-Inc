@@ -1,8 +1,8 @@
-package inc.always.right.temp.anomalydetector.temperature.service;
+package inc.always.right.temp.anomalydetector.temperature.detector;
 
 import inc.always.right.temp.anomalydetector.temperature.anomaly.DetectedAnomalyService;
 import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
-import inc.always.right.temp.anomalydetector.temperature.recent.redis.RecentTemperatureMeasurementService;
+import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,6 +38,7 @@ class AnomalyDetectorFacadeTest {
 
         //then
         verify(detectedAnomalyService, never()).storeAnomaly(notAnomaly);
+        verify(recentTemperatureMeasurementService, atMostOnce()).addRecentMeasurement(notAnomaly);
     }
 
     @Test
@@ -51,6 +52,7 @@ class AnomalyDetectorFacadeTest {
 
         //then
         verify(detectedAnomalyService, atMostOnce()).storeAnomaly(anomaly);
+        verify(recentTemperatureMeasurementService, atMostOnce()).addRecentMeasurement(anomaly);
     }
 
 

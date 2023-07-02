@@ -1,4 +1,4 @@
-package inc.always.right.temp.anomalydetector.temperature.service;
+package inc.always.right.temp.anomalydetector.temperature.detector;
 
 
 import inc.always.right.temp.anomalydetector.temperature.anomaly.DetectedAnomalyService;

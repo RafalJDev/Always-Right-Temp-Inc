@@ -30,4 +30,12 @@ public class RecentTemperatureMeasurementService {
                 .toList();
     }
 
+    public List<RecentTemperatureMeasurement> getRecentMeasurements(UUID thermometerId, UUID roomId, LocalDateTime from) {
+        // todo change to redistemplate to make query on redis itself and not to get all related rows
+        // but assuming 1 measurement per second means max 60 record would be pulled here (ttl 6o sec)
+        return repository.findAllByThermometerIdAndRoomId(thermometerId.toString(), roomId.toString())
+                .stream()
+                .filter(recent -> from.isAfter(recent.timestamp()))
+                .toList();
+    }
 }

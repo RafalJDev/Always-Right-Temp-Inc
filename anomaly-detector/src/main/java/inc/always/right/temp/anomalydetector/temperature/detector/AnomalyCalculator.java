@@ -1,4 +1,4 @@
-package inc.always.right.temp.anomalydetector.temperature.service;
+package inc.always.right.temp.anomalydetector.temperature.detector;
 
 import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-public class CalculatorUtil {
+public class AnomalyCalculator {
 
     private static final BigDecimal ANOMALY_THRESHOLD = new BigDecimal("5.00");
 
@@ -16,8 +16,7 @@ public class CalculatorUtil {
                 .map(RecentTemperatureMeasurement::temperature)
                 .reduce(BigDecimal::add)
                 .get()
-                .setScale(2, RoundingMode.HALF_UP)
-                .divide(BigDecimal.valueOf(recentMeasurements.size()));
+                .divide(BigDecimal.valueOf(recentMeasurements.size()), 2, RoundingMode.HALF_UP);
     }
 
     public static boolean isAnomaly(TemperatureMeasurement measurement, BigDecimal average) {

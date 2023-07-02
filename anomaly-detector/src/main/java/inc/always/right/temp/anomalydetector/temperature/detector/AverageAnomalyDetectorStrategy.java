@@ -1,4 +1,4 @@
-package inc.always.right.temp.anomalydetector.temperature.service;
+package inc.always.right.temp.anomalydetector.temperature.detector;
 
 import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static inc.always.right.temp.anomalydetector.temperature.service.CalculatorUtil.calculateAverage;
-import static inc.always.right.temp.anomalydetector.temperature.service.CalculatorUtil.isAnomaly;
+import static inc.always.right.temp.anomalydetector.temperature.detector.AnomalyCalculator.calculateAverage;
+import static inc.always.right.temp.anomalydetector.temperature.detector.AnomalyCalculator.isAnomaly;
 
 @Service
 @Primary
