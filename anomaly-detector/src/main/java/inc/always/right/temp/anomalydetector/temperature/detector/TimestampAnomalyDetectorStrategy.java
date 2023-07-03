@@ -9,11 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import static inc.always.right.temp.anomalydetector.temperature.detector.AnomalyCalculator.calculateAverage;
-import static inc.always.right.temp.anomalydetector.temperature.detector.AnomalyCalculator.isAnomaly;
 import static java.time.LocalDateTime.now;
 
 @Service
@@ -23,6 +20,7 @@ import static java.time.LocalDateTime.now;
 class TimestampAnomalyDetectorStrategy implements AnomalyDetectorStrategy {
 
     private final RecentTemperatureMeasurementService service;
+    private final AnomalyCalculator calculator;
 
     @Value("${anomaly.detector.strategy.timestamp.from.seconds: 10}")
     private long timestampFromSeconds;
@@ -31,9 +29,10 @@ class TimestampAnomalyDetectorStrategy implements AnomalyDetectorStrategy {
     public DetectorResult findAnomalies(TemperatureMeasurement measurement) {
         List<RecentTemperatureMeasurement> recentMeasurements = service.getRecentMeasurements(measurement.thermometerId(), measurement.roomId(), now().minusSeconds(timestampFromSeconds));
 
-        BigDecimal average = calculateAverage(recentMeasurements);
-
-        if (isAnomaly(measurement, average)) {
+        if (recentMeasurements.isEmpty()) {
+            return DetectorResult.noAnomaly();
+        }
+        if (calculator.isAnomaly(recentMeasurements, measurement)) {
             return DetectorResult.anomalies(List.of(measurement));
         }
 

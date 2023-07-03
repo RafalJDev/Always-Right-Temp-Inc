@@ -9,6 +9,7 @@ public record TemperatureMeasurement(
         UUID thermometerId,
         UUID roomId,
         BigDecimal temperature,
-        LocalDateTime timestamp
-) {
+        LocalDateTime timestamp,
+        TemperatureUnit temperatureUnit
+) implements Temperature {
 }

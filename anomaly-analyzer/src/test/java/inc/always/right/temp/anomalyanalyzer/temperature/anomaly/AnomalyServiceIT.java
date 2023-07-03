@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static inc.always.right.temp.anomalyanalyzer.temperature.anomaly.TemperatureUnit.CELSIUS;
+
 @SpringBootTest
 @Testcontainers
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -33,21 +35,21 @@ class AnomalyServiceIT {
     @Test
     void shouldFindByThermometerId() {
         UUID thermometerId = UUID.randomUUID();
-        var anomaly = new DetectedAnomaly(null, thermometerId.toString(), UUID.randomUUID().toString(), new BigDecimal("27.1"), LocalDateTime.now());
+        var anomaly = new DetectedAnomaly(null, thermometerId.toString(), UUID.randomUUID().toString(), new BigDecimal("27.1"), LocalDateTime.now(), CELSIUS);
 
         StepVerifier.create(repository.save(anomaly))
                 .expectNextCount(1)
                 .verifyComplete();
 
         StepVerifier.create(service.getAnomaliesByThermometerId(thermometerId))
-                .expectNextMatches(measurement -> measurement.getThermometerId().equals(thermometerId.toString()))
+                .expectNextMatches(measurement -> measurement.getThermometerId().equals(thermometerId))
                 .verifyComplete();
     }
 
     @Test
     void shouldFindByRoomId() {
         UUID roomId = UUID.randomUUID();
-        var anomaly = new DetectedAnomaly(null, UUID.randomUUID().toString(), roomId.toString(), new BigDecimal("27.1"), LocalDateTime.now());
+        var anomaly = new DetectedAnomaly(null, UUID.randomUUID().toString(), roomId.toString(), new BigDecimal("27.1"), LocalDateTime.now(), CELSIUS);
 
         StepVerifier.create(repository.save(anomaly))
                 .expectNextCount(1)
@@ -65,12 +67,12 @@ class AnomalyServiceIT {
         UUID thermometerId2 = UUID.randomUUID();
         UUID roomId = UUID.randomUUID();
 
-        var anomaly = new DetectedAnomaly(null, thermometerId.toString(), roomId.toString(), new BigDecimal("21.1"), LocalDateTime.now());
-        var anomaly2 = new DetectedAnomaly(null, thermometerId.toString(), roomId.toString(), new BigDecimal("22.1"), LocalDateTime.now());
-        var anomaly3 = new DetectedAnomaly(null, thermometerId.toString(), roomId.toString(), new BigDecimal("23.1"), LocalDateTime.now());
+        var anomaly = new DetectedAnomaly(null, thermometerId.toString(), roomId.toString(), new BigDecimal("21.1"), LocalDateTime.now(), CELSIUS);
+        var anomaly2 = new DetectedAnomaly(null, thermometerId.toString(), roomId.toString(), new BigDecimal("22.1"), LocalDateTime.now(), CELSIUS);
+        var anomaly3 = new DetectedAnomaly(null, thermometerId.toString(), roomId.toString(), new BigDecimal("23.1"), LocalDateTime.now(), CELSIUS);
 
-        var anomaly4 = new DetectedAnomaly(null, thermometerId2.toString(), roomId.toString(), new BigDecimal("24.1"), LocalDateTime.now());
-        var anomaly5 = new DetectedAnomaly(null, thermometerId2.toString(), roomId.toString(), new BigDecimal("25.1"), LocalDateTime.now());
+        var anomaly4 = new DetectedAnomaly(null, thermometerId2.toString(), roomId.toString(), new BigDecimal("24.1"), LocalDateTime.now(), CELSIUS);
+        var anomaly5 = new DetectedAnomaly(null, thermometerId2.toString(), roomId.toString(), new BigDecimal("25.1"), LocalDateTime.now(), CELSIUS);
 
         StepVerifier.create(repository.saveAll(List.of(anomaly, anomaly2, anomaly3, anomaly4, anomaly5)))
                 .expectNextCount(5)

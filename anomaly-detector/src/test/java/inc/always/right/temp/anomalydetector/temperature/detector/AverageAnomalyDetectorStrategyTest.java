@@ -1,5 +1,6 @@
 package inc.always.right.temp.anomalydetector.temperature.detector;
 
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureConverter;
 import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementService;
@@ -10,6 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureUnit.CELSIUS;
 import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -31,9 +34,12 @@ class AverageAnomalyDetectorStrategyTest {
     @Mock
     RecentTemperatureMeasurementService service;
 
+    @Spy
+    AnomalyCalculator calculator = new AnomalyCalculator("5.00", 2, new TemperatureConverter(2));
+
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(strategy, "amountOfMeasurements", 10L);
+        ReflectionTestUtils.setField(strategy, "minAmountOfMeasurements", 10L);
     }
 
     @ParameterizedTest
@@ -202,9 +208,6 @@ class AverageAnomalyDetectorStrategyTest {
         );
         var recent_minus_20_27 = createRecentMeasurements(temperatures_minus_20_27);
 
-        BigDecimal bigDecimal = AnomalyCalculator.calculateAverage(recent_minus_20_27);
-        System.out.println("bigDecimal = " + bigDecimal);
-
         // 20. Not Anomaly - average = -20.27, current = -15.28, diff = 4.99
         var temperatureMeasurement20 = createMeasurement("-15.28");
 
@@ -240,11 +243,11 @@ class AverageAnomalyDetectorStrategyTest {
 
     private static List<RecentTemperatureMeasurement> createRecentMeasurements(List<String> recentMeasurements) {
         return recentMeasurements.stream()
-                .map(temperature -> new RecentTemperatureMeasurement(null, null, null, new BigDecimal(temperature), now()))
+                .map(temperature -> new RecentTemperatureMeasurement(null, null, null, new BigDecimal(temperature), now(), CELSIUS))
                 .toList();
     }
 
     private static TemperatureMeasurement createMeasurement(String val) {
-        return new TemperatureMeasurement(null, null, new BigDecimal(val), now());
+        return new TemperatureMeasurement(null, null, new BigDecimal(val), now(), CELSIUS);
     }
 }

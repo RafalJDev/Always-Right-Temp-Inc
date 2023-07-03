@@ -1,5 +1,6 @@
 package inc.always.right.temp.anomalyanalyzer.temperature.anomaly;
 
+import inc.always.right.temp.anomalyanalyzer.temperature.anomaly.notification.DetectedAnomalyNotificationService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +30,9 @@ class AnomalyControllerTest {
 
     @MockBean
     AnomalyRepository repository;
+
+    @MockBean
+    DetectedAnomalyNotificationService notificationService;
 
     @Test
     void sth() {

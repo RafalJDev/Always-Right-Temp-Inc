@@ -5,10 +5,12 @@ import inc.always.right.temp.anomalydetector.temperature.measurement.Temperature
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementRepository;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -17,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import static inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureUnit.CELSIUS;
 import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         portTargetProperty = "spring.data.redis.port"
 )
 @Testcontainers
+@ActiveProfiles("test")
 class AverageAnomalyDetectorStrategyIT {
 
     @Container
@@ -56,13 +60,14 @@ class AverageAnomalyDetectorStrategyIT {
                             thermometerId,
                             roomId,
                             new BigDecimal(temperature),
-                            now()
+                            now(),
+                            CELSIUS
                     ));
                 }
         );
 
         TemperatureMeasurement measurement = new TemperatureMeasurement(
-                UUID.fromString(thermometerId), UUID.fromString(roomId), new BigDecimal("27.1"), null
+                UUID.fromString(thermometerId), UUID.fromString(roomId), new BigDecimal("27.1"), null, CELSIUS
         );
 
         //when
@@ -88,13 +93,14 @@ class AverageAnomalyDetectorStrategyIT {
                             thermometerId,
                             roomId,
                             new BigDecimal(temperature),
-                            now()
+                            now(),
+                            CELSIUS
                     ));
                 }
         );
 
         TemperatureMeasurement measurement = new TemperatureMeasurement(
-                UUID.fromString(thermometerId), UUID.fromString(roomId), new BigDecimal("23.1"), null
+                UUID.fromString(thermometerId), UUID.fromString(roomId), new BigDecimal("23.1"), null, CELSIUS
         );
 
         //when
@@ -102,6 +108,11 @@ class AverageAnomalyDetectorStrategyIT {
 
         //then
         assertEquals(false, result.foundAnomaly());
+    }
+
+    @AfterEach
+    void clean() {
+        recentTemperatureMeasurementRepository.deleteAll();
     }
 
     @AfterAll

@@ -7,6 +7,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,6 +24,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
         hostTargetProperty = "spring.data.redis.host",
         portTargetProperty = "spring.data.redis.port"
 )
+@ActiveProfiles("test")
 public class BaseFullIT {
 
     @Container

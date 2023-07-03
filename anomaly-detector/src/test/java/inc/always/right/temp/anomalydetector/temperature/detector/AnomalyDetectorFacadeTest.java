@@ -33,7 +33,7 @@ class AnomalyDetectorFacadeTest {
         when(strategy.findAnomalies(any())).thenReturn(DetectorResult.noAnomaly());
 
         //when
-        var notAnomaly = new TemperatureMeasurement(null, null, null, null);
+        var notAnomaly = new TemperatureMeasurement(null, null, null, null, null);
         facade.handleMeasurement(notAnomaly);
 
         //then
@@ -44,7 +44,7 @@ class AnomalyDetectorFacadeTest {
     @Test
     void givenAnomaly_thenShouldSave() {
         //given
-        TemperatureMeasurement anomaly = new TemperatureMeasurement(null, null, null, null);
+        TemperatureMeasurement anomaly = new TemperatureMeasurement(null, null, null, null, null);
         when(strategy.findAnomalies(any())).thenReturn(new DetectorResult(List.of(anomaly)));
 
         //when

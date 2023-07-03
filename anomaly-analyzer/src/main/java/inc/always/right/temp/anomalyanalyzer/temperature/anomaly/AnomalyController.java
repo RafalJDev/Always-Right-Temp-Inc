@@ -21,13 +21,12 @@ import java.util.UUID;
 class AnomalyController {
 
     private final AnomalyService service;
-    private final DetectedAnomalyNotificationService notificationService;
+    private final DetectedAnomalyNotificationService detectedAnomalyNotificationService;
 
     @GetMapping
     Flux<DetectedAnomalyResponse> anomaliesByThermometerIdOrRoomId(@RequestParam(required = false) UUID thermometerId,
                                                                    @RequestParam(required = false) UUID roomId) {
 
-        System.out.println("thermometerId = " + thermometerId);
         if (thermometerId == null && roomId == null) {
             return Flux.just();
         }
@@ -45,14 +44,14 @@ class AnomalyController {
         return service.getAnomaliesWithAmountHigherThanThreshold();
     }
 
-    @GetMapping(path = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     Flux<ServerSentEvent> streamAnomalies(@RequestParam String thermometerId) {
-        return notificationService.listenToSavedAnomalies();
+        return detectedAnomalyNotificationService.listenToSavedAnomalies();
     }
 
-    @GetMapping(path = "/unsubscribe")
+    @GetMapping(path = "/unstream")
     Mono<ResponseEntity<Void>> streamAnomalies() {
-        notificationService.unlistenToSavedItems();
+        detectedAnomalyNotificationService.unlistenToSavedItems();
         return Mono.just(
                 ResponseEntity
                         .status(HttpStatus.I_AM_A_TEAPOT)

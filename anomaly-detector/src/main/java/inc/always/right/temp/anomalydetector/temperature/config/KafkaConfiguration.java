@@ -71,7 +71,7 @@ class KafkaConfiguration {
 
     @Bean
     DefaultErrorHandler defaultErrorHandler(
-            KafkaOperations<Object, Object> operations) {
+            KafkaOperations<String, TemperatureMeasurement> operations) {
 
         var recover = new DeadLetterPublishingRecoverer(operations,
                 (cr, e) -> new TopicPartition(cr.topic() + DEAD_LETTER, 0));

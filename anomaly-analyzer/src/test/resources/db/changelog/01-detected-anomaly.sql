@@ -4,7 +4,8 @@ create table Detected_Anomaly
     thermometer_id text,
     room_id    text,
     temperature  DECIMAL(11,2),
-    timestamp    TIMESTAMP
+    timestamp    TIMESTAMP,
+    temperature_unit text
 );
 
 CREATE OR REPLACE FUNCTION notify_anomaly_saved()

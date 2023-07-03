@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureUnit.CELSIUS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -29,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         portTargetProperty = "spring.data.redis.port"
 )
 @Testcontainers
+@ActiveProfiles("test")
+
 class AnomalyDetectorFacadeIT {
 
     @Container
@@ -63,12 +67,13 @@ class AnomalyDetectorFacadeIT {
                                     thermometerId,
                                     roomId,
                                     new BigDecimal(temperature),
-                                    LocalDateTime.now()
+                                    LocalDateTime.now(),
+                                    CELSIUS
                             ));
                 }
         );
 
-        TemperatureMeasurement measurement = new TemperatureMeasurement(UUID.fromString(thermometerId), UUID.fromString(roomId), new BigDecimal("27.1"), null);
+        TemperatureMeasurement measurement = new TemperatureMeasurement(UUID.fromString(thermometerId), UUID.fromString(roomId), new BigDecimal("27.1"), null, CELSIUS);
 
         //when
         facade.handleMeasurement(measurement);

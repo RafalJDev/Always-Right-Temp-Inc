@@ -1,5 +1,7 @@
 package inc.always.right.temp.anomalyanalyzer.temperature.anomaly;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -29,6 +31,8 @@ public class DetectedAnomaly {
     private BigDecimal temperature;
     @Column
     private LocalDateTime timestamp;
-
+    @Enumerated(EnumType.STRING)
+    @Column
+    private TemperatureUnit temperatureUnit;
 
 }

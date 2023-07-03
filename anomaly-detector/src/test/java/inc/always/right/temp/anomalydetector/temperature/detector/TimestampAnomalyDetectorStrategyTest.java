@@ -1,5 +1,6 @@
 package inc.always.right.temp.anomalydetector.temperature.detector;
 
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureConverter;
 import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementService;
@@ -10,6 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureUnit.CELSIUS;
 import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
@@ -38,6 +41,9 @@ class TimestampAnomalyDetectorStrategyTest {
     }
     @Mock
     RecentTemperatureMeasurementService service;
+
+    @Spy
+    AnomalyCalculator calculator = new AnomalyCalculator("5.00", 2, new TemperatureConverter(2));
 
     @ParameterizedTest
     @MethodSource(value = {
@@ -151,11 +157,11 @@ class TimestampAnomalyDetectorStrategyTest {
 
     private static List<RecentTemperatureMeasurement> createRecentMeasurements(List<String> recentMeasurements) {
         return recentMeasurements.stream()
-                .map(temperature -> new RecentTemperatureMeasurement(null, null, null, new BigDecimal(temperature), now()))
+                .map(temperature -> new RecentTemperatureMeasurement(null, null, null, new BigDecimal(temperature), now(), CELSIUS))
                 .toList();
     }
 
     private static TemperatureMeasurement createMeasurement(String val) {
-        return new TemperatureMeasurement(null, null, new BigDecimal(val), now());
+        return new TemperatureMeasurement(null, null, new BigDecimal(val), now(), CELSIUS);
     }
 }

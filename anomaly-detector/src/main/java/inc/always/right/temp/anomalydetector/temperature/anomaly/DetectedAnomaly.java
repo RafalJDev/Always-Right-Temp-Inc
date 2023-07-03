@@ -1,6 +1,8 @@
 package inc.always.right.temp.anomalydetector.temperature.anomaly;
 
 import inc.always.right.temp.anomalydetector.temperature.config.UUIDConverter;
+import inc.always.right.temp.anomalydetector.temperature.measurement.Temperature;
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureUnit;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +16,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
-public class DetectedAnomaly {
+public class DetectedAnomaly implements Temperature {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,6 +32,17 @@ public class DetectedAnomaly {
     private BigDecimal temperature;
     @Column
     private LocalDateTime timestamp;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TemperatureUnit temperatureUnit;
 
+    @Override
+    public BigDecimal temperature() {
+        return temperature;
+    }
 
+    @Override
+    public TemperatureUnit temperatureUnit() {
+        return temperatureUnit;
+    }
 }

@@ -70,3 +70,15 @@ Frameworks/libraries to be used:
 - testing: jupiter/testcontainers/spring-test
 - docker&compose to easily create containers of kafka, redis and postgres
 - lombok, mapstruct, liquibase
+
+## Todo
+
+- More test cases both unit and integration ones
+- Fix redis query (redis template)
+- Fix query with group by issue
+- fix anomaly analyzer lack of uuid support in entity
+- add support for list of alghoritms eg. anomaly.detector.strategy: average, limit (to check a range of temperatures eg. 0 to 40, so temp 45 C will )
+#
+- Add both services to docker-compose
+- separate producer app for testing
+- and/or separate e2e test project

@@ -2,7 +2,6 @@ package inc.always.right.temp.anomalydetector.temperature.detector;
 
 import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
-import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementRepository;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +10,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import static inc.always.right.temp.anomalydetector.temperature.detector.AnomalyCalculator.calculateAverage;
-import static inc.always.right.temp.anomalydetector.temperature.detector.AnomalyCalculator.isAnomaly;
 
 @Service
 @Primary
@@ -24,28 +20,22 @@ import static inc.always.right.temp.anomalydetector.temperature.detector.Anomaly
 @Slf4j
 class AverageAnomalyDetectorStrategy implements AnomalyDetectorStrategy {
 
-    @Value("${anomaly.detector.threshold: 10}")
-    private Long amountOfMeasurements;
+    @Value("${anomaly.detector.average.min.amount: 10}")
+    private Long minAmountOfMeasurements;
 
     private final RecentTemperatureMeasurementService service;
-    private final RecentTemperatureMeasurementRepository repository;
+    private final AnomalyCalculator anomalyCalculator;
 
     @Override
     public DetectorResult findAnomalies(TemperatureMeasurement measurement) {
-        List<RecentTemperatureMeasurement> recentMeasurements = service.getRecentMeasurements(measurement.thermometerId(), measurement.roomId(), amountOfMeasurements);
+        List<RecentTemperatureMeasurement> recentMeasurements = service.getRecentMeasurements(measurement.thermometerId(), measurement.roomId(), minAmountOfMeasurements);
 
-        if (measurement.temperature().compareTo(new BigDecimal(25.00)) > 0) {
-            System.out.println("here2");
-        }
-
-        if (recentMeasurements.size() < amountOfMeasurements) {
+        if (recentMeasurements.size() < minAmountOfMeasurements) {
             log.info("Not enough recent measurements to detect anomalies, thermometerId: {}, roomId: {}", measurement.thermometerId(), measurement.roomId());
             return DetectorResult.noAnomaly();
         }
 
-        BigDecimal average = calculateAverage(recentMeasurements);
-
-        if (isAnomaly(measurement, average)) {
+        if (anomalyCalculator.isAnomaly(recentMeasurements, measurement)) {
             log.info("Found anomaly: {}", measurement);
             return DetectorResult.anomalies(List.of(measurement));
         }

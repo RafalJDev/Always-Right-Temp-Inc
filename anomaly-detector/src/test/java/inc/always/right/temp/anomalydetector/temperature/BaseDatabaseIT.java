@@ -4,6 +4,7 @@ import com.jupitertools.springtestredis.RedisTestContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -14,6 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
         portTargetProperty = "spring.data.redis.port"
 )
 @Testcontainers
+@ActiveProfiles("test")
 public class BaseDatabaseIT {
 
     @Container
