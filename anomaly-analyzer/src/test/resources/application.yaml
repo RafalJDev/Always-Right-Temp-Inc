@@ -1,0 +1,7 @@
+logging:
+  level:
+    io:
+      r2dbc:
+        postgresql:
+          QUERY: debug
+        postgresqlPARAM: debug
