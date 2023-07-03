@@ -25,10 +25,11 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.mysql:mysql-connector-j:8.0.33'
+	implementation 'org.postgresql:postgresql'
 
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
 
 	implementation 'org.liquibase:liquibase-core:4.23.0'
 
@@ -38,18 +39,21 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
 
+//	implementation 'org.apache.commons:commons-math:2.1'
+	implementation 'org.apache.commons:commons-math3:3.6.1'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.1.0'
 
+	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-
 	testImplementation 'org.testcontainers:junit-jupiter'
 
 	testImplementation 'com.redis.testcontainers:testcontainers:1.15.3'
 //	testImplementation 'com.redis.testcontainers:testcontainers:1.4.4'
-	testImplementation 'org.testcontainers:mysql:1.18.3'
+	testImplementation 'org.testcontainers:postgresql:1.15.3'
 	testImplementation 'com.jupiter-tools:spring-test-redis:0.1'
 
 	testImplementation 'org.springframework.kafka:spring-kafka-test'

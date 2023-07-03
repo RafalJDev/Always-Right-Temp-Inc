@@ -1,7 +1,7 @@
 package inc.always.right.temp.anomalydetector.temperature.detector;
 
 import inc.always.right.temp.anomalydetector.temperature.anomaly.DetectedAnomalyService;
-import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class AnomalyDetectorFacadeTest {
 
         //then
         verify(detectedAnomalyService, never()).storeAnomaly(notAnomaly);
-        verify(recentTemperatureMeasurementService, atMostOnce()).addRecentMeasurement(notAnomaly);
+        verify(recentTemperatureMeasurementService, times(1)).addRecentMeasurement(notAnomaly);
     }
 
     @Test
@@ -51,8 +51,8 @@ class AnomalyDetectorFacadeTest {
         facade.handleMeasurement(anomaly);
 
         //then
-        verify(detectedAnomalyService, atMostOnce()).storeAnomaly(anomaly);
-        verify(recentTemperatureMeasurementService, atMostOnce()).addRecentMeasurement(anomaly);
+        verify(detectedAnomalyService, times(1)).storeAnomaly(anomaly);
+        verify(recentTemperatureMeasurementService, times(1)).addRecentMeasurement(anomaly);
     }
 
 

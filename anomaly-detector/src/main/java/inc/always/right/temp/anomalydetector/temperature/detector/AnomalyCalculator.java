@@ -1,6 +1,6 @@
 package inc.always.right.temp.anomalydetector.temperature.detector;
 
-import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
 
 import java.math.BigDecimal;

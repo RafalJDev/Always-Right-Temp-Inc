@@ -33,7 +33,7 @@ Dev team:
 - kafka messages
 - REST api
 - algorithms choose option in properties file
-- mysql as persistent database for detected anomalies
+- postgres as persistent database for detected anomalies
 - redis to store recent measurements, because of easy and straightforward TTL mechanism (60 sec)
 - Command/Query separation
 - dead letter topic
@@ -41,7 +41,7 @@ Dev team:
 ## Assumptions/Questions/Observations
 
 No details on how sensors works, but I assume 1 sensor generate 1 measurement per second, this has implications for the application.
-We got roomId, so sensor could switch rooms, so id should be based both on roomId and thermometer Id.
+We got roomId, so sensor could switch rooms.
 
 Note for the Client: To avoid accidental anomaly detections sensor should shoot down when switching rooms.
 
@@ -67,32 +67,6 @@ Because of simplicity and lack of knowledge about real world sensors I would cho
 Frameworks/libraries to be used:
 - spring kafka/jpa/redis
 - spring webflux for REST api
-- testing: jupiter/testcontainers/spring-test/restassuerd
-- docker&compose to easily create containers of kafka, redis and mysql
+- testing: jupiter/testcontainers/spring-test
+- docker&compose to easily create containers of kafka, redis and postgres
 - lombok, mapstruct, liquibase
-
-
-## Checklist
-
-- ~~Average algorithm~~
-- Timestamp algorithm
-- properties from file
-- redis integration
-- mysql integration
-- kafka integration
-- docker-compose
-
-- multiple algorithm (list)
-
-
-- 2 endpoints rest api
-- 1 stream event endpoint
-
-- create generator
-
-- perfomance ~ 20k request/s
-
-Extras:
-- tests in spock (data driven BDD)
-- second variation of services (3 services, 1 working on schedule per 1 sec)
-- kubernetes/deployment

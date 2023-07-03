@@ -1,0 +1,21 @@
+spring:
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: temperature-measurements
+  data:
+    redis:
+      port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    driver-class-name:org.testcontainers.jdbc.ContainerDatabaseDriver:
+
+anomaly:
+  detector:
+    strategy: average
+
+kafka:
+  bootstrap-servers: localhost:9092

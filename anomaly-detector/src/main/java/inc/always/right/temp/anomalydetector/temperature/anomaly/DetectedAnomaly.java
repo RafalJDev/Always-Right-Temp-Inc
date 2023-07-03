@@ -1,5 +1,6 @@
 package inc.always.right.temp.anomalydetector.temperature.anomaly;
 
+import inc.always.right.temp.anomalydetector.temperature.config.UUIDConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +21,10 @@ public class DetectedAnomaly {
     private Long id;
 
     @Column
+    @Convert(converter = UUIDConverter.class)
     private UUID thermometerId;
     @Column
+    @Convert(converter = UUIDConverter.class)
     private UUID roomId;
     @Column
     private BigDecimal temperature;

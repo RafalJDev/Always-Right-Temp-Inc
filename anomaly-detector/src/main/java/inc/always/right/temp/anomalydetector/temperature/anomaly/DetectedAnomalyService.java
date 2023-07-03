@@ -1,6 +1,6 @@
 package inc.always.right.temp.anomalydetector.temperature.anomaly;
 
-import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

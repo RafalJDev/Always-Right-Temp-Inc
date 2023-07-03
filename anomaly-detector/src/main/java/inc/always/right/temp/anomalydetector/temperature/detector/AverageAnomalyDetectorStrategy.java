@@ -1,10 +1,12 @@
 package inc.always.right.temp.anomalydetector.temperature.detector;
 
-import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurement;
+import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementRepository;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -22,18 +24,22 @@ import static inc.always.right.temp.anomalydetector.temperature.detector.Anomaly
 @Slf4j
 class AverageAnomalyDetectorStrategy implements AnomalyDetectorStrategy {
 
-    private static final long AMOUNT_OF_MEASUREMENTS = 10;
+    @Value("${anomaly.detector.threshold: 10}")
+    private Long amountOfMeasurements;
 
     private final RecentTemperatureMeasurementService service;
+    private final RecentTemperatureMeasurementRepository repository;
 
     @Override
     public DetectorResult findAnomalies(TemperatureMeasurement measurement) {
-        // todo change to redistemplate to make query on redis itself and not to get all related rows
-        // but assuming 1 measurement per second means max 60 record would be pulled here (ttl 6o sec)
-        List<RecentTemperatureMeasurement> recentMeasurements = service.getRecentMeasurements(measurement.thermometerId(), measurement.roomId(), AMOUNT_OF_MEASUREMENTS);
+        List<RecentTemperatureMeasurement> recentMeasurements = service.getRecentMeasurements(measurement.thermometerId(), measurement.roomId(), amountOfMeasurements);
 
-        if (recentMeasurements.size() < AMOUNT_OF_MEASUREMENTS) {
-            log.debug("Not enough recent measurements to detect anomalies, thermometerId: {}, roomId: {}", measurement.thermometerId(), measurement.roomId());
+        if (measurement.temperature().compareTo(new BigDecimal(25.00)) > 0) {
+            System.out.println("here2");
+        }
+
+        if (recentMeasurements.size() < amountOfMeasurements) {
+            log.info("Not enough recent measurements to detect anomalies, thermometerId: {}, roomId: {}", measurement.thermometerId(), measurement.roomId());
             return DetectorResult.noAnomaly();
         }
 

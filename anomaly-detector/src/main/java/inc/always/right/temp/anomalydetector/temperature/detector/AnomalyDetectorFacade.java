@@ -2,8 +2,9 @@ package inc.always.right.temp.anomalydetector.temperature.detector;
 
 
 import inc.always.right.temp.anomalydetector.temperature.anomaly.DetectedAnomalyService;
-import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 import inc.always.right.temp.anomalydetector.temperature.recent.RecentTemperatureMeasurementService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,14 @@ public class AnomalyDetectorFacade {
     private final DetectedAnomalyService detectedAnomalyService;
     private final RecentTemperatureMeasurementService recentTemperatureMeasurementService;
 
+    //todo found
+    // strategies based on list of strategies eg. average, timestamp, limit
+    @Transactional
     public void handleMeasurement(TemperatureMeasurement measurement) {
-        if (strategy.findAnomalies(measurement)
-                .foundAnomaly()) {
-            detectedAnomalyService.storeAnomaly(measurement);
-        }
+        System.out.println("here");
+        strategy.findAnomalies(measurement)
+                .anomalies()
+                .forEach(detectedAnomalyService::storeAnomaly);
 
         recentTemperatureMeasurementService.addRecentMeasurement(measurement);
     }

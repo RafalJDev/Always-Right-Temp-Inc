@@ -1,6 +1,6 @@
 package inc.always.right.temp.anomalydetector.temperature.detector;
 
-import inc.always.right.temp.anomalydetector.temperature.domain.TemperatureMeasurement;
+import inc.always.right.temp.anomalydetector.temperature.measurement.TemperatureMeasurement;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public record DetectorResult(
     }
 
     public static DetectorResult noAnomaly() {
-        return new DetectorResult(null);
+        return new DetectorResult(List.of());
 
     }
     public static DetectorResult anomalies(List<TemperatureMeasurement> anomalies) {
