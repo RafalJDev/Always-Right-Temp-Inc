@@ -30,12 +30,12 @@ public class TemperatureConverter {
     public BigDecimal fahrenheitToCelsius(BigDecimal fahrenheit) {
         return fahrenheit.subtract(THIRTY_TWO)
                 .multiply(FIVE)
-                .divide(NINE, 2, RoundingMode.HALF_UP);
+                .divide(NINE, scale, RoundingMode.HALF_UP);
     }
 
     public BigDecimal celsiusToFahrenheit(BigDecimal fahrenheit) {
         return fahrenheit.multiply(NINE)
-                .divide(FIVE, 2, RoundingMode.HALF_UP)
+                .divide(FIVE, scale, RoundingMode.HALF_UP)
                 .add(THIRTY_TWO);
     }
 }
